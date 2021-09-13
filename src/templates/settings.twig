@@ -1,0 +1,10 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.autosuggestField({
+    first: true,
+    label: "Bitly access token",
+    instructions: "Login to your Bitly account, and go to [The API settings page](https://app.bitly.com/settings/api/) to obtain your Access Token.",
+    name: 'accessToken',
+    value: settings.accessToken,
+    suggestEnvVars: true,
+}) }}

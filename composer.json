@@ -1,0 +1,19 @@
+{
+    "name": "nilsenpaul/craft-bitly-connect",
+    "description": "This Craft CMS plugin makes it easy for you to create shortened URLs directly from your templates, through Bitly",
+    "type": "craft-plugin",
+    "require": {
+        "php": ">=7.1",
+        "craftcms/cms": "^3.1.0"
+    },
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "nilsenpaul\\bitlyconnect\\": "src/"
+        }
+    },
+    "extra": {
+      "name": "Bitly Connect",
+      "handle": "bitly-connect"
+    }
+}
