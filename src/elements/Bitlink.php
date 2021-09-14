@@ -70,12 +70,14 @@ class Bitlink extends Element
         $cacheIdentifier = 'bitly-connect--totalClicks--' . $this->id;
 
         if (!Craft::$app->getCache()->get($cacheIdentifier)) {
+            $cacheDuration = rand(900, 1800);
+
             $bitly = new Bitly();
 
             $this->totalClicks = $bitly->getTotalClicksForBitlink($this);
 
             if (Craft::$app->getElements()->saveElement($this)) {
-                Craft::$app->getCache()->set($cacheIdentifier, $this->totalClicks, 1800);
+                Craft::$app->getCache()->set($cacheIdentifier, $this->totalClicks, $cacheDuration);
             }
         }
 
