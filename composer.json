@@ -1,6 +1,7 @@
 {
     "name": "nilsenpaul/bitly-connect",
     "description": "This Craft CMS plugin makes it easy for you to create shortened URLs directly from your templates, through Bitly",
+    "version": "1.0.0",
     "type": "craft-plugin",
     "support": {
       "email": "info@nilsenpaul.nl",
