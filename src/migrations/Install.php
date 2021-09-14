@@ -15,6 +15,7 @@ class Install extends Migration
                 'bitlyId' => $this->string()->notNull(),
                 'link' => $this->string()->notNull(),
                 'group' => $this->string(),
+                'totalClicks' => $this->integer()->defaultValue(0),
                 'dateCreated' => $this->dateTime()->notNull(),
                 'dateUpdated' => $this->dateTime()->notNull(),
                 'uid' => $this->uid()

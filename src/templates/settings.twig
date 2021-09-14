@@ -8,3 +8,44 @@
     value: settings.accessToken,
     suggestEnvVars: true,
 }) }}
+
+{% if settings.accessToken is not empty %}
+    {% if availableDomains is not empty %}
+        {{ forms.selectField({
+            label: "Default custom domain",
+            instructions: "If you want to use one of your custom domains for all your Bitlinks, please select it here.",
+            name: 'domain',
+            value: settings.domain,
+        }) }}
+    {% else %}
+        <div class="field">
+            <div class="heading">
+                <label>Default custom domain</label>
+            </div>
+
+            <div class="instructions">If you want to use one of your custom domains for all your Bitlinks, please select it here.</div>
+
+            <p style="color: red;">No custom domains were set in Bitly.</p>
+        </div>
+    {% endif %}
+
+    {% if availableGroups is not empty %}
+        {{ forms.selectField({
+            label: "Default group",
+            instructions: "If you want to use one of your groups for all your Bitlinks, please select it here.",
+            name: 'group',
+            value: settings.group,
+            options: {'': 'No default group'} |merge(availableGroups),
+        }) }}
+    {% else %}
+        <div class="field">
+            <div class="heading">
+                <label>Default group</label>
+            </div>
+
+            <div class="instructions">If you want to use one of your groups for all your Bitlinks, please select it here.</div>
+
+            <p style="color: red;">No groups were obtained from Bitly.</p>
+        </div>
+    {% endif %}
+{% endif %}

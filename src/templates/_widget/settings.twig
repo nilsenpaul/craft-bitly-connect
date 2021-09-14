@@ -1,0 +1,15 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.textField({
+    label: 'Limit',
+    type: 'number',
+    name: 'limit',
+    value: widget.limit,
+}) }}
+
+{{ forms.selectField({
+    label: 'Order by',
+    name: 'orderBy',
+    value: widget.orderBy,
+    options: orderOptions,
+}) }}

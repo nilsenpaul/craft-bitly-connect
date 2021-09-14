@@ -4,7 +4,8 @@
     "type": "craft-plugin",
     "require": {
         "php": ">=7.1",
-        "craftcms/cms": "^3.1.0"
+        "craftcms/cms": "^3.1.0",
+        "putyourlightson/craft-log-to-file": "^1.0.0"
     },
     "license": "proprietary",
     "autoload": {

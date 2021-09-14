@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2eca2b0586af8876443e27e21606e993",
+    "content-hash": "f753013e5b5edff1f4bbb37f0012fa30",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -2624,6 +2624,58 @@
                 "source": "https://github.com/php-fig/log/tree/1.1.4"
             },
             "time": "2021-05-03T11:20:27+00:00"
+        },
+        {
+            "name": "putyourlightson/craft-log-to-file",
+            "version": "1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/putyourlightson/craft-log-to-file.git",
+                "reference": "c03aec429710e9b3d54392cd75881090ae1c6457"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/putyourlightson/craft-log-to-file/zipball/c03aec429710e9b3d54392cd75881090ae1c6457",
+                "reference": "c03aec429710e9b3d54392cd75881090ae1c6457",
+                "shasum": ""
+            },
+            "require": {
+                "craftcms/cms": "^3.0.0",
+                "yiisoft/yii2": "^2.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "name": "Log To File",
+                "developer": "PutYourLightsOn",
+                "developerUrl": "https://putyourlightson.com/",
+                "documentationUrl": "https://github.com/putyourlightson/craft-log-to-file",
+                "changelogUrl": "https://raw.githubusercontent.com/putyourlightson/craft-log-to-file/v1/CHANGELOG.md"
+            },
+            "autoload": {
+                "psr-4": {
+                    "putyourlightson\\logtofile\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Logs messages to a specific log file for Craft CMS.",
+            "homepage": "https://github.com/putyourlightson/craft-log-to-file",
+            "keywords": [
+                "Craft",
+                "cms",
+                "craftcms",
+                "file",
+                "log",
+                "plugin"
+            ],
+            "support": {
+                "docs": "https://github.com/putyourlightson/craft-log-to-file",
+                "issues": "https://github.com/putyourlightson/craft-log-to-file/issues",
+                "source": "https://github.com/putyourlightson/craft-log-to-file"
+            },
+            "time": "2020-08-24T09:13:24+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -5670,7 +5722,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=7.1"
+    },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }

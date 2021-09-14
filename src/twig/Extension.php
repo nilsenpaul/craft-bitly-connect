@@ -18,6 +18,7 @@ class Extension extends AbstractExtension
 
     public function bitlinkFilter(string $longUrl, string $domain = null, string $group = null): string
     {
-        return Plugin::$instance->bitlinks->createOrShowBitlink($longUrl, $domain, $group)->link ?? '';
+        // Return the link, or the original URL if no Bitlink was created
+        return Plugin::$instance->bitlinks->createOrShowBitlink($longUrl, $domain, $group)->link ?? $longUrl;
     }
 }

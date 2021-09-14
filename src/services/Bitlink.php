@@ -16,17 +16,40 @@ class Bitlink extends Component
 
     public function createOrShowBitlink(string $longUrl, string $domain = null, string $group = null): ?BitlinkElement
     {
+        $settings = Plugin::$instance->getSettings();
+
         $this->checkConfig();
 
         $longUrl = $this->sanitizeUrl($longUrl);
 
-        // Check if this URL exists
-        $existingBitlink = $this->getBitlinkForUrl($longUrl);
+        // Check if this is a valid URL
+        if (filter_var($longUrl, FILTER_VALIDATE_URL) === false) {
+            Plugin::warning($longUrl . ' is not a valid URL, so no Bitlink could be made');
 
-        if ($existingBitlink) {
+            return null;
+        }
+
+        // Check if this URL exists
+        if ($existingBitlink = $this->getBitlinkForUrl($longUrl)) {
+            Plugin::info('The existing Bitlink {bitlink} was found for the URL {url}, no new Bitlink was created', [
+                'bitlink' => $existingBitlink->link,
+                'url' => $longUrl,
+            ]);
+
             return $existingBitlink;
         }
 
+        // Should we use a default custom domain?
+        if ($domain === null && !empty($settings->domain)) {
+            $domain = $settings->domain;
+        }
+
+        // Should we use a default group?
+        if ($group === null && !empty($settings->group)) {
+            $group = $settings->group;
+        }
+
+        // Create a new Bitlink
         $bitly = new Bitly();
         $result = $bitly->shorten(
             $longUrl,
@@ -35,7 +58,6 @@ class Bitlink extends Component
         );
 
         if ($result !== null) {
-            // Create a new Bitlink element and save it
             $bitlink = new BitlinkElement();
             $bitlink->longUrl = $longUrl;
             $bitlink->bitlyId = $result['id'];
@@ -43,9 +65,16 @@ class Bitlink extends Component
             $bitlink->group = self::getGroupHashFromUrl($result['references']['group']);
 
             if (Craft::$app->getElements()->saveElement($bitlink)) {
+                Plugin::info('The new Bitlink {bitlink} was created for URL {url}', [
+                    'bitlink' => $bitlink->link,
+                    'url' => $longUrl,
+                ]);
+
                 return $bitlink;
             } else {
-                // TODO: error logging
+                Plugin::error('Something went wrong while saving your new Bitlink: {errors}', [
+                    'errors' => json_encode($bitlink->errors),
+                ]);
             }
         }
 
@@ -57,6 +86,8 @@ class Bitlink extends Component
         $settings = Plugin::$instance->getSettings();
 
         if (empty($settings->accessToken)) {
+            Plugin::error('No Bitly access token was configured, so no Bitlinks will be created');
+
             throw new InvalidConfigException('To use one of the Bitly filters, please enter your access token on the plugin\'s settings page.');
         }
     }

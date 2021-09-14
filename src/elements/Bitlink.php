@@ -2,8 +2,11 @@
 
 namespace nilsenpaul\bitlyconnect\elements;
 
+use Craft;
 use craft\base\Element;
 use craft\elements\db\ElementQueryInterface;
+use nilsenpaul\bitlyconnect\helpers\Bitly;
+use nilsenpaul\bitlyconnect\elements\Bitlink;
 use nilsenpaul\bitlyconnect\elements\db\BitlinkQuery;
 
 class Bitlink extends Element
@@ -13,6 +16,7 @@ class Bitlink extends Element
     public $bitlyId;
     public $link;
     public $group;
+    public $totalClicks;
 
     /**
      * @inheritdoc
@@ -44,7 +48,7 @@ class Bitlink extends Element
                 ->execute();
         } else {
             \Craft::$app->db->createCommand()
-                ->update('{{%products}}', [
+                ->update('{{%bitlyconnect_links}}', [
                     'longUrl' => $this->longUrl,
                     'bitlyId' => $this->bitlyId,
                     'link' => $this->link,
@@ -59,5 +63,22 @@ class Bitlink extends Element
     public static function find(): ElementQueryInterface
     {
         return new BitlinkQuery(static::class);
+    }
+
+    public function getClicks()
+    {
+        $cacheIdentifier = 'bitly-connect--totalClicks--' . $this->id;
+
+        if (!Craft::$app->getCache()->get($cacheIdentifier)) {
+            $bitly = new Bitly();
+
+            $this->totalClicks = $bitly->getTotalClicksForBitlink($this);
+
+            if (Craft::$app->getElements()->saveElement($this)) {
+                Craft::$app->getCache()->set($cacheIdentifier, $this->totalClicks, 1800);
+            }
+        }
+
+        return Craft::$app->getCache()->get($cacheIdentifier);
     }
 }

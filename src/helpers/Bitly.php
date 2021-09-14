@@ -3,8 +3,10 @@
 namespace nilsenpaul\bitlyconnect\helpers;
 
 use Craft;
+use craft\helpers\ArrayHelper;
 use craft\helpers\Json;
 use nilsenpaul\bitlyconnect\Plugin;
+use nilsenpaul\bitlyconnect\elements\Bitlink;
 
 class Bitly
 {
@@ -36,11 +38,63 @@ class Bitly
 
             return Json::decode($response->getBody(), true);
         } catch (\Exception $e) {
-            // TODO: error logging
-            var_dump($e->getMessage());
+            Plugin::error('Something went wrong while creating a new Bitlink: {errors}', [
+                'errors' => json_encode($e->getMessage()),
+            ]);
         }
 
         return null;
+    }
+
+    public function getDomains(): ?array
+    {
+        try {
+            $response = $this->getClient()->request(
+                'GET',
+                'bsds/'
+            );
+
+            return Json::decode($response->getBody(), true)['bsds'];
+        } catch (\Exception $e) {
+            Plugin::error('Something went wrong while fetching the available domains for your Bitly account', [
+                'errors' => json_encode($e->getMessage()),
+            ]);
+        }
+
+        return null;
+    }
+
+    public function getGroups(): ?array
+    {
+        try {
+            $response = $this->getClient()->request(
+                'GET',
+                'groups/'
+            );
+
+            $groups = Json::decode($response->getBody())['groups'];
+
+            return ArrayHelper::map($groups, 'guid', 'name');
+        } catch (\Exception $e) {
+            Plugin::error('Something went wrong while fetching the available groups for your Bitly account', [
+                'errors' => json_encode($e->getMessage()),
+            ]);
+        }
+
+        return null;
+    }
+
+    public function getTotalClicksForBitlink(Bitlink $bitlink): int
+    {
+        $response = $this->getClient()->request(
+            'GET',
+            'bitlinks/' . $bitlink->bitlyId . '/clicks/summary?unit=month&units=-1'
+        );
+
+        if ($response) {
+            $response = Json::decode($response->getBody());
+            return $response['total_clicks'];
+        }
     }
 
     protected function getClient()

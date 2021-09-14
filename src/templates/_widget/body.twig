@@ -1,0 +1,24 @@
+<div class="bitlinks-container">
+    {% if bitlinks|length %}
+        <table class="fullwidth">
+            {% for bitlink in bitlinks %}
+                <tr>
+                    <td>
+                        <strong>{{ bitlink.longUrl |truncate(40, '...') }}</strong>
+                        <span class="light">
+                            {{ bitlink.dateCreated|timestamp('short') }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ bitlink.link }}" target="_blank" rel="noopener nofollow">{{ bitlink.bitlyId }}</a>
+                    </td>
+                    <td>
+                        <span>{{ bitlink.clicks }} clicks</span>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p class="zilch small">{{ "No Bitlinks exist yet."|t('bitly-connect') }}</p>
+    {% endif %}
+</div>
